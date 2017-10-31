@@ -1,0 +1,26 @@
+{
+  "name": "generator-amwp",
+  "version": "0.1.0",
+  "description": "This WordPress bootstrap includes ACF Pro and Timber.  The theme is Timber with Bootstrap, Ionicons, and automation built-in.  Automation is achieved with gulp + an external MySQL server.  Can also add custom modules written to complete basic functionality i.e. php mailer or MailChimp sign-up.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/artlyticalmedia/generator-amwp.git"
+  },
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "files": [
+    "app"
+  ],
+  "author": "Artlytical Media (David Rhoderick)",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/artlyticalmedia/generator-amwp#readme",
+  "dependencies": {
+    "simple-git": "^1.80.1",
+    "yeoman-generator": "^2.0.1"
+  }
+}
