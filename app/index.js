@@ -1,6 +1,19 @@
-var git = require('simple-git');
+var Generator = require('yeoman-generator'),
+    simpleGit = require('simple-git')(),
+    fs = require('fs-extra');
 
-var wordpressRepo = 'https://github.com/WordPress/WordPress.git';
+var dir = {
+      project: 'wordpress',
+      acfProPlugin: 'wordpress/wp-content/plugins/advanced-custom-fields-pro',
+      timberPlugin: 'wordpress/wp-content/plugins/timber',
+      wordpressTheme: 'wordpress/wp-content/themes/timber-starter-theme'
+    }, repo = {
+      wordpress: 'https://github.com/WordPress/WordPress.git',
+      timberStarterTheme: 'https://github.com/timber/starter-theme.git',
+      acfPro: 'https://github.com/wp-premium/advanced-custom-fields-pro.git'
+    }, links = {
+      timberPlugin: 'https://downloads.wordpress.org/plugin/timber-library.zip'
+    };
 
 module.exports = class extends Generator {
   // The name `constructor` is important here
@@ -13,6 +26,34 @@ module.exports = class extends Generator {
   }
 
   cloneWordPress() {
-    git.clone(wordpressRepo);
+    console.log('Downloading latest WordPress version...');
+    simpleGit.clone(repo.wordpress, dir.project, function (error) {
+      if(error !== null) {
+        console.log(error);
+      } else {
+        console.log('Latest WordPress downloaded!');
+
+        console.log('Downloading ACF Pro and Timber plugins...');
+        simpleGit.clone(repo.acfPro, dir.acfProPlugin, function (error) {
+          if(error !== null) {
+            console.log(error);
+          } else {
+            console.log('ACF Pro plugin installed!');
+
+            request(links.timberPlugin)
+              .pipe(fs.createWriteStream('timber.zip'))
+              .on('close', function () {
+                fs.createReadStream('timber.zip')
+                  .pipe(unzip.Extract({ path: 'wordpress/wp-content/plugins/' }));
+
+                if (fs.existsSync('wordpress/wp-content/plugins/timber-library')) {
+                  console.log('Timber plugin installed!');
+                  fs.unlink('timber.zip');
+                }
+              });
+          }
+        });
+      }
+    });
   }
 };
