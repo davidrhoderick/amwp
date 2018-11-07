@@ -27,8 +27,8 @@
   "license": "ISC",
   "homepage": "https://github.com/davidrhoderick/amwp.git#readme",
   "dependencies": {
-    "fs-extra": "^4.0.2", // Necessary?
-    // "request": "^2.83.0",
+    "fs-extra": "^4.0.2",
+    "node-composer-runner": "^0.3.0",
     "simple-git": "^1.80.1",
     "sync": "^0.2.5",
     "yeoman-generator": "^2.0.1"

@@ -9,11 +9,12 @@ var dir = {
       wordpressTheme: 'wordpress/wp-content/themes/timber-starter-theme'
     }, repo = {
       wordpress: 'https://github.com/WordPress/WordPress.git',
-      timberStarterTheme: 'https://github.com/timber/starter-theme.git',
-      acfPro: 'https://github.com/wp-premium/advanced-custom-fields-pro.git'
-    }, links = {
+      acfProPlugin: 'https://github.com/wp-premium/advanced-custom-fields-pro.git',
+      timberPlugin: 'https://github.com/timber/timber.git',
+      timberStarterTheme: 'https://github.com/timber/starter-theme.git'
+    }/*, links = {
       timberPlugin: 'https://downloads.wordpress.org/plugin/timber-library.zip'
-    };
+    }*/;
 
 module.exports = class extends Generator {
   // The name `constructor` is important here
@@ -34,23 +35,31 @@ module.exports = class extends Generator {
         console.log('Latest WordPress downloaded!');
 
         console.log('Downloading ACF Pro and Timber plugins...');
-        simpleGit.clone(repo.acfPro, dir.acfProPlugin, function (error) {
+        simpleGit.clone(repo.acfProPlugin, dir.acfProPlugin, function (error) {
           if(error !== null) {
             console.log(error);
           } else {
             console.log('ACF Pro plugin installed!');
 
-            request(links.timberPlugin)
-              .pipe(fs.createWriteStream('timber.zip'))
-              .on('close', function () {
-                fs.createReadStream('timber.zip')
-                  .pipe(unzip.Extract({ path: 'wordpress/wp-content/plugins/' }));
+            simpleGit.clone(repo.timberPlugin, dir.timberPlugin, function (error) {
+              if(error !== null) {
+                console.log(error);
+              } else {
+                console.log('Timber plugin installed!');
+              }
+            });
 
-                if (fs.existsSync('wordpress/wp-content/plugins/timber-library')) {
-                  console.log('Timber plugin installed!');
-                  fs.unlink('timber.zip');
-                }
-              });
+            // request(links.timberPlugin)
+            //   .pipe(fs.createWriteStream('timber.zip'))
+            //   .on('close', function () {
+            //     fs.createReadStream('timber.zip')
+            //       .pipe(unzip.Extract({ path: 'wordpress/wp-content/plugins/' }));
+
+            //     if (fs.existsSync('wordpress/wp-content/plugins/timber-library')) {
+            //       console.log('Timber plugin installed!');
+            //       fs.unlink('timber.zip');
+            //     }
+            //   });
           }
         });
       }
